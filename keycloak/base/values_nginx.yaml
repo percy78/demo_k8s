@@ -167,31 +167,7 @@ nodeAffinityPreset:
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ## Note: podAffinityPreset, podAntiAffinityPreset, and  nodeAffinityPreset will be ignored when it's set
 ##
-#affinity: {}
-affinity: |
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchLabels:
-            {{- include "common.labels.matchLabels" . | nindent 10 }}
-          matchExpressions:
-            - key: app.kubernetes.io/component
-              operator: NotIn
-              values:
-                - test
-        topologyKey: kubernetes.io/hostname
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchLabels:
-              {{- include "common.labels.matchLabels" . | nindent 12 }}
-            matchExpressions:
-              - key: app.kubernetes.io/component
-                operator: NotIn
-                values:
-                  - test
-          topologyKey: topology.kubernetes.io/zone
+affinity: {}
 
 hostNetwork: false
 ## @param hostIPC Specify if host IPC should be enabled for NGINX pod
@@ -200,9 +176,7 @@ hostIPC: false
 ## @param nodeSelector Node labels for pod assignment. Evaluated as a template.
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
-nodeSelector:
-  "daas.teliacompany.net/type": "application_node"
-  "topology.kubernetes.io/zone": "CHANGE-ME"
+nodeSelector: {}
 ## @param tolerations Tolerations for pod assignment. Evaluated as a template.
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
@@ -373,16 +347,10 @@ autoscaling:
   targetMemory: ""
 ## @param extraVolumes Array to add extra volumes
 ##
-extraVolumes:
-  - name: server-cert-secret-volume
-    secret:
-      secretName: keycloak-server-cert-secret
+extraVolumes: []
 ## @param extraVolumeMounts Array to add extra mount
 ##
-extraVolumeMounts:
-  - name: server-cert-secret-volume
-    mountPath: /etc/server-cert-secret-volume
-    readOnly: true
+extraVolumeMounts: []
 
 ## Pods Service Account
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
