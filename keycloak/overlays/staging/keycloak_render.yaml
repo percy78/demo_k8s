@@ -1,0 +1,1344 @@
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr3
+  namespace: keycloak
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr6
+  namespace: keycloak
+---
+apiVersion: v1
+automountServiceAccountToken: true
+imagePullSecrets: []
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-sr3
+  namespace: keycloak
+---
+apiVersion: v1
+automountServiceAccountToken: true
+imagePullSecrets: []
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-sr6
+  namespace: keycloak
+---
+apiVersion: v1
+data:
+  my.cnf: |-
+    [mysqld]
+    skip-name-resolve
+    explicit_defaults_for_timestamp
+    basedir=/opt/bitnami/mariadb
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    tmpdir=/opt/bitnami/mariadb/tmp
+    max_allowed_packet=16M
+    bind-address=*
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    log-error=/opt/bitnami/mariadb/logs/mysqld.log
+    character-set-server=UTF8
+    collation-server=utf8_general_ci
+    slow_query_log=0
+    slow_query_log_file=/opt/bitnami/mariadb/logs/mysqld.log
+    long_query_time=10.0
+
+    [client]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    default-character-set=UTF8
+    plugin_dir=/opt/bitnami/mariadb/plugin
+
+    [manager]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr3
+  namespace: keycloak
+---
+apiVersion: v1
+data:
+  my.cnf: |-
+    [mysqld]
+    skip-name-resolve
+    explicit_defaults_for_timestamp
+    basedir=/opt/bitnami/mariadb
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    tmpdir=/opt/bitnami/mariadb/tmp
+    max_allowed_packet=16M
+    bind-address=*
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    log-error=/opt/bitnami/mariadb/logs/mysqld.log
+    character-set-server=UTF8
+    collation-server=utf8_general_ci
+    slow_query_log=0
+    slow_query_log_file=/opt/bitnami/mariadb/logs/mysqld.log
+    long_query_time=10.0
+
+    [client]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    default-character-set=UTF8
+    plugin_dir=/opt/bitnami/mariadb/plugin
+
+    [manager]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr6
+  namespace: keycloak
+---
+apiVersion: v1
+data:
+  server-block.conf: "server {\n  listen 8443 ssl;\n  # server_name grstgkeycloak.estpak.ee;\n
+    \ include /opt/bitnami/nginx/conf/mime.types;\n  default_type application/octet-stream;\n
+    \ \n  ssl_certificate          /etc/server-cert-secret-volume/cert.pem;\n  ssl_certificate_key
+    \     /etc/server-cert-secret-volume/key.pem;\n  ssl_trusted_certificate  /etc/server-cert-secret-volume/ca.pem;\n\n
+    \ # Enabling SSL session cache improves the performance of HTTPS websites. \n
+    \ # The following directives must be placed after ssl_trusted_certificate. \n
+    \ # They enable shared caching of size 20MB with a cache lifetime of 10 minutes.\n
+    \ ssl_session_cache shared:SSL:20m;\n  ssl_session_timeout 10m;\n\n  # Specify
+    the protocols and ciphers to be used in the SSL connection. \n  # Here we are
+    allowing only TLS v1.3 and disabled insecure ciphers like MD5 and DSS.\n  ssl_prefer_server_ciphers
+    \      on;\n  ssl_protocols TLSv1.3;\n  ssl_ciphers  HIGH:!aNULL:!MD5:!DSS;\n\n
+    \ location / {\n    proxy_set_header Host $host;\n    proxy_set_header X-Real-IP
+    $remote_addr;\n    proxy_set_header X-Forwarded-For $proxy_protocol_addr;\n    proxy_set_header
+    X-Forwarded-Proto $scheme;\n\n    proxy_read_timeout 60;\n    proxy_connect_timeout
+    60;\n    proxy_send_timeout 60;\n   \n    proxy_pass http://keycloak-http.keycloak.svc.cluster.local:80/;\n
+    \ }\n}"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-server-block-sr3
+  namespace: keycloak
+---
+apiVersion: v1
+data:
+  server-block.conf: "server {\n  listen 8443 ssl;\n  # server_name grstgkeycloak.estpak.ee;\n
+    \ include /opt/bitnami/nginx/conf/mime.types;\n  default_type application/octet-stream;\n
+    \ \n  ssl_certificate          /etc/server-cert-secret-volume/cert.pem;\n  ssl_certificate_key
+    \     /etc/server-cert-secret-volume/key.pem;\n  ssl_trusted_certificate  /etc/server-cert-secret-volume/ca.pem;\n\n
+    \ # Enabling SSL session cache improves the performance of HTTPS websites. \n
+    \ # The following directives must be placed after ssl_trusted_certificate. \n
+    \ # They enable shared caching of size 20MB with a cache lifetime of 10 minutes.\n
+    \ ssl_session_cache shared:SSL:20m;\n  ssl_session_timeout 10m;\n\n  # Specify
+    the protocols and ciphers to be used in the SSL connection. \n  # Here we are
+    allowing only TLS v1.3 and disabled insecure ciphers like MD5 and DSS.\n  ssl_prefer_server_ciphers
+    \      on;\n  ssl_protocols TLSv1.3;\n  ssl_ciphers  HIGH:!aNULL:!MD5:!DSS;\n\n
+    \ location / {\n    proxy_set_header Host $host;\n    proxy_set_header X-Real-IP
+    $remote_addr;\n    proxy_set_header X-Forwarded-For $proxy_protocol_addr;\n    proxy_set_header
+    X-Forwarded-Proto $scheme;\n\n    proxy_read_timeout 60;\n    proxy_connect_timeout
+    60;\n    proxy_send_timeout 60;\n   \n    proxy_pass http://keycloak-http.keycloak.svc.cluster.local:80/;\n
+    \ }\n}"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-server-block-sr6
+  namespace: keycloak
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: headless
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-headless
+  namespace: keycloak
+spec:
+  clusterIP: None
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/name: keycloakx
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: http
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-http
+  namespace: keycloak
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/name: keycloakx
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb
+  namespace: keycloak
+spec:
+  ports:
+  - name: mysql
+    nodePort: null
+    port: 3306
+    protocol: TCP
+    targetPort: mysql
+  selector:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/name: mariadb
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: keycloak-pool-sr3
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-sr3
+  namespace: keycloak
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/name: nginx
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: keycloak-pool-sr6
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-sr6
+  namespace: keycloak
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/name: nginx
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-sr3
+  namespace: keycloak
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nginx
+      app.kubernetes.io/name: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/keycloak-server-cert-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/server-block-configuration: 75447d7ffcd580ce514a0aa7e27ed641b0a1f639145d9edd6b689862d44941b5
+      labels:
+        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: nginx
+        helm.sh/chart: nginx-13.2.24
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: NotIn
+                  values:
+                  - test
+                matchLabels:
+                  app.kubernetes.io/instance: nginx
+                  app.kubernetes.io/name: nginx
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: NotIn
+                values:
+                - test
+              matchLabels:
+                app.kubernetes.io/instance: nginx
+                app.kubernetes.io/name: nginx
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: NGINX_HTTP_PORT_NUMBER
+          value: "8080"
+        - name: NGINX_HTTPS_PORT_NUMBER
+          value: "8443"
+        image: docker.io/bitnami/nginx:1.23.3-debian-11-r17
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: http
+          timeoutSeconds: 5
+        name: nginx
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: http
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /opt/bitnami/nginx/conf/server_blocks
+          name: nginx-server-block
+        - mountPath: /etc/server-cert-secret-volume
+          name: server-cert-secret-volume
+          readOnly: true
+      hostIPC: false
+      hostNetwork: false
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR3
+      serviceAccountName: default
+      shareProcessNamespace: false
+      volumes:
+      - configMap:
+          name: nginx-server-block-sr3
+        name: nginx-server-block
+      - name: server-cert-secret-volume
+        secret:
+          secretName: keycloak-server-cert-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-13.2.24
+  name: nginx-sr6
+  namespace: keycloak
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nginx
+      app.kubernetes.io/name: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/keycloak-server-cert-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/server-block-configuration: 75447d7ffcd580ce514a0aa7e27ed641b0a1f639145d9edd6b689862d44941b5
+      labels:
+        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: nginx
+        helm.sh/chart: nginx-13.2.24
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: NotIn
+                  values:
+                  - test
+                matchLabels:
+                  app.kubernetes.io/instance: nginx
+                  app.kubernetes.io/name: nginx
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: NotIn
+                values:
+                - test
+              matchLabels:
+                app.kubernetes.io/instance: nginx
+                app.kubernetes.io/name: nginx
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: NGINX_HTTP_PORT_NUMBER
+          value: "8080"
+        - name: NGINX_HTTPS_PORT_NUMBER
+          value: "8443"
+        image: docker.io/bitnami/nginx:1.23.3-debian-11-r17
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: http
+          timeoutSeconds: 5
+        name: nginx
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: http
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /opt/bitnami/nginx/conf/server_blocks
+          name: nginx-server-block
+        - mountPath: /etc/server-cert-secret-volume
+          name: server-cert-secret-volume
+          readOnly: true
+      hostIPC: false
+      hostNetwork: false
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR6
+      serviceAccountName: default
+      shareProcessNamespace: false
+      volumes:
+      - configMap:
+          name: nginx-server-block-sr6
+        name: nginx-server-block
+      - name: server-cert-secret-volume
+        secret:
+          secretName: keycloak-server-cert-secret
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr3
+  namespace: keycloak
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: mariadb
+      app.kubernetes.io/name: mariadb
+  serviceName: keycloak-mariadb
+  template:
+    metadata:
+      annotations:
+        checksum/configuration: 19c5e7814913349655ba673f483793d8b768430d2c36e2446a75d6b9142912f4
+      labels:
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: mariadb
+        helm.sh/chart: mariadb-11.5.0
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: primary
+                  app.kubernetes.io/instance: mariadb
+                  app.kubernetes.io/name: mariadb
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-root-password
+              name: keycloak-mariadb-secret
+        - name: MARIADB_USER
+          value: keycloak-admin
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-password
+              name: keycloak-mariadb-secret
+        - name: MARIADB_DATABASE
+          value: keycloak
+        image: docker.io/bitnami/mariadb:10.6.12-debian-11-r3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MARIADB_ROOT_PASSWORD:-}"
+              if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin status -uroot -p"${password_aux}"
+          failureThreshold: 3
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: mariadb
+        ports:
+        - containerPort: 3306
+          name: mysql
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MARIADB_ROOT_PASSWORD:-}"
+              if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin status -uroot -p"${password_aux}"
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /bitnami/mariadb
+          name: data
+        - mountPath: /opt/bitnami/mariadb/conf/my.cnf
+          name: config
+          subPath: my.cnf
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR3
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: keycloak-mariadb-sr3
+      volumes:
+      - configMap:
+          name: keycloak-mariadb-sr3
+        name: config
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/name: mariadb
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+      storageClassName: longhorn
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: primary
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb
+    helm.sh/chart: mariadb-11.5.0
+  name: keycloak-mariadb-sr6
+  namespace: keycloak
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: mariadb
+      app.kubernetes.io/name: mariadb
+  serviceName: keycloak-mariadb
+  template:
+    metadata:
+      annotations:
+        checksum/configuration: 19c5e7814913349655ba673f483793d8b768430d2c36e2446a75d6b9142912f4
+      labels:
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: mariadb
+        helm.sh/chart: mariadb-11.5.0
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: primary
+                  app.kubernetes.io/instance: mariadb
+                  app.kubernetes.io/name: mariadb
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-root-password
+              name: keycloak-mariadb-secret
+        - name: MARIADB_USER
+          value: keycloak-admin
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-password
+              name: keycloak-mariadb-secret
+        - name: MARIADB_DATABASE
+          value: keycloak
+        image: docker.io/bitnami/mariadb:10.6.12-debian-11-r3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MARIADB_ROOT_PASSWORD:-}"
+              if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin status -uroot -p"${password_aux}"
+          failureThreshold: 3
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: mariadb
+        ports:
+        - containerPort: 3306
+          name: mysql
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -ec
+            - |
+              password_aux="${MARIADB_ROOT_PASSWORD:-}"
+              if [[ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]]; then
+                  password_aux=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+              fi
+              mysqladmin status -uroot -p"${password_aux}"
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /bitnami/mariadb
+          name: data
+        - mountPath: /opt/bitnami/mariadb/conf/my.cnf
+          name: config
+          subPath: my.cnf
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR6
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: keycloak-mariadb-sr6
+      volumes:
+      - configMap:
+          name: keycloak-mariadb-sr6
+        name: config
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app.kubernetes.io/component: primary
+        app.kubernetes.io/instance: mariadb
+        app.kubernetes.io/name: mariadb
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+      storageClassName: longhorn
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-sr3
+  namespace: keycloak
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: keycloak
+      app.kubernetes.io/name: keycloakx
+  serviceName: keycloak-headless
+  template:
+    metadata:
+      annotations:
+        checksum/config-startup: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+        checksum/keycloak-admin-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/keycloak-mariadb-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/secrets: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+      labels:
+        app.kubernetes.io/instance: keycloak
+        app.kubernetes.io/name: keycloakx
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: NotIn
+                  values:
+                  - test
+                matchLabels:
+                  app.kubernetes.io/instance: keycloak
+                  app.kubernetes.io/name: keycloakx
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: NotIn
+                values:
+                - test
+              matchLabels:
+                app.kubernetes.io/instance: keycloak
+                app.kubernetes.io/name: keycloakx
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - --verbose
+        - start
+        - --spi-events-listener-jboss-logging-success-level=info
+        - --spi-events-listener-jboss-logging-error-level=warn
+        command:
+        - /opt/keycloak/bin/kc.sh
+        env:
+        - name: KC_LOG_LEVEL
+          value: INFO,io.quarkus.vertx.http:TRACE
+        - name: KC_HOSTNAME_ADMIN
+          value: grstgkeycloak.estpak.ee
+        - name: KC_HOSTNAME
+          value: grstgkeycloak.estpak.ee
+        - name: KC_HTTP_RELATIVE_PATH
+          value: /
+        - name: KC_CACHE
+          value: ispn
+        - name: KC_CACHE_STACK
+          value: kubernetes
+        - name: KC_PROXY
+          value: edge
+        - name: KC_DB
+          value: mariadb
+        - name: KC_DB_URL_HOST
+          value: keycloak-mariadb.keycloak.svc.cluster.local
+        - name: KC_DB_URL_PORT
+          value: "3306"
+        - name: KC_DB_URL_DATABASE
+          value: keycloak
+        - name: KC_DB_USERNAME
+          value: keycloak-admin
+        - name: KC_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-password
+              name: keycloak-mariadb-secret
+        - name: KC_METRICS_ENABLED
+          value: "true"
+        - name: KC_HEALTH_ENABLED
+          value: "true"
+        - name: KC_TRANSACTION_XA_ENABLED
+          value: "false"
+        - name: KC_HOSTNAME_PORT
+          value: "443"
+        - name: KC_HOSTNAME_PATH
+          value: /
+        - name: KC_HTTP_ENABLED
+          value: "true"
+        - name: KC_HTTP_PORT
+          value: "8080"
+        - name: KC_HOSTNAME_STRICT
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_HTTPS
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+          value: "false"
+        - name: JAVA_OPTS_APPEND
+          value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false
+            -Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local
+        envFrom:
+        - secretRef:
+            name: keycloak-admin-secret
+        image: quay.io/keycloak/keycloak:20.0.3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: http
+          initialDelaySeconds: 0
+          timeoutSeconds: 5
+        name: keycloak
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: http
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 1
+      enableServiceLinks: true
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |
+          echo 'Waiting for Database to become ready...'
+
+          until printf "." && nc -z -w 2 keycloak-mariadb.keycloak.svc.cluster.local 3306; do
+              sleep 2;
+          done;
+
+          echo 'Database OK ✓'
+        image: docker.io/busybox:1.32
+        imagePullPolicy: IfNotPresent
+        name: dbchecker
+        resources:
+          limits:
+            cpu: 20m
+            memory: 32Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR3
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: keycloak-sr3
+      terminationGracePeriodSeconds: 60
+  updateStrategy:
+    type: RollingUpdate
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloakx
+    app.kubernetes.io/version: 20.0.3
+    helm.sh/chart: keycloakx-2.1.1
+  name: keycloak-sr6
+  namespace: keycloak
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: keycloak
+      app.kubernetes.io/name: keycloakx
+  serviceName: keycloak-headless
+  template:
+    metadata:
+      annotations:
+        checksum/config-startup: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+        checksum/keycloak-admin-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/keycloak-mariadb-secret: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        checksum/secrets: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+      labels:
+        app.kubernetes.io/instance: keycloak
+        app.kubernetes.io/name: keycloakx
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: NotIn
+                  values:
+                  - test
+                matchLabels:
+                  app.kubernetes.io/instance: keycloak
+                  app.kubernetes.io/name: keycloakx
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: NotIn
+                values:
+                - test
+              matchLabels:
+                app.kubernetes.io/instance: keycloak
+                app.kubernetes.io/name: keycloakx
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - --verbose
+        - start
+        - --spi-events-listener-jboss-logging-success-level=info
+        - --spi-events-listener-jboss-logging-error-level=warn
+        command:
+        - /opt/keycloak/bin/kc.sh
+        env:
+        - name: KC_LOG_LEVEL
+          value: INFO,io.quarkus.vertx.http:TRACE
+        - name: KC_HOSTNAME_ADMIN
+          value: grstgkeycloak.estpak.ee
+        - name: KC_HOSTNAME
+          value: grstgkeycloak.estpak.ee
+        - name: KC_HTTP_RELATIVE_PATH
+          value: /
+        - name: KC_CACHE
+          value: ispn
+        - name: KC_CACHE_STACK
+          value: kubernetes
+        - name: KC_PROXY
+          value: edge
+        - name: KC_DB
+          value: mariadb
+        - name: KC_DB_URL_HOST
+          value: keycloak-mariadb.keycloak.svc.cluster.local
+        - name: KC_DB_URL_PORT
+          value: "3306"
+        - name: KC_DB_URL_DATABASE
+          value: keycloak
+        - name: KC_DB_USERNAME
+          value: keycloak-admin
+        - name: KC_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: mariadb-password
+              name: keycloak-mariadb-secret
+        - name: KC_METRICS_ENABLED
+          value: "true"
+        - name: KC_HEALTH_ENABLED
+          value: "true"
+        - name: KC_TRANSACTION_XA_ENABLED
+          value: "false"
+        - name: KC_HOSTNAME_PORT
+          value: "443"
+        - name: KC_HOSTNAME_PATH
+          value: /
+        - name: KC_HTTP_ENABLED
+          value: "true"
+        - name: KC_HTTP_PORT
+          value: "8080"
+        - name: KC_HOSTNAME_STRICT
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_HTTPS
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+          value: "false"
+        - name: JAVA_OPTS_APPEND
+          value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false
+            -Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local
+        envFrom:
+        - secretRef:
+            name: keycloak-admin-secret
+        image: quay.io/keycloak/keycloak:20.0.3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: http
+          initialDelaySeconds: 0
+          timeoutSeconds: 5
+        name: keycloak
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: http
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 1
+      enableServiceLinks: true
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |
+          echo 'Waiting for Database to become ready...'
+
+          until printf "." && nc -z -w 2 keycloak-mariadb.keycloak.svc.cluster.local 3306; do
+              sleep 2;
+          done;
+
+          echo 'Database OK ✓'
+        image: docker.io/busybox:1.32
+        imagePullPolicy: IfNotPresent
+        name: dbchecker
+        resources:
+          limits:
+            cpu: 20m
+            memory: 32Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+      nodeSelector:
+        daas.teliacompany.net/type: application_node
+        topology.kubernetes.io/zone: SR6
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: keycloak-sr6
+      terminationGracePeriodSeconds: 60
+  updateStrategy:
+    type: RollingUpdate
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: keycloak-admin-secret
+  namespace: keycloak
+spec:
+  encryptedData:
+    KEYCLOAK_ADMIN: AgC6meD782vG2XRDjnbiDR2PZz5ctiYMvEh7zI16XDkSSuE6FvB0uRlJunHroEvTF9AiqrHCsPr1fq5srkLArcJrEoM6Ev38srHEq1rmAmTg8VbXk/Skt1z2xivLaUKlm+MyQSNQxOShFmgoYCokQxMWfdbVloP1y8bHHBuih7XrJe/Hz90y91yVuoLHlYHHcz4jl7iaN/nsBK7oqglZekW9u38ynA98dV8vCBPmJ6FhKza+VnBMm7ieNDdm39C7H+afd/VY2BLGEvR0Y+TemrMLR7CfAF4CAt6RE7Y0ottX7UZUFNvJFynZD0xgJHzzOvvt5g+Wfm9WScBJ1MINgYhYUI7oG2VKBCn1TyJZGBjhemprlAjvx6S6L03uQFEHQMVatjRrYkRXi8P8pngKyP28V6YbYSov2I3oaeaAjf3T6UApHSROeSynr0HkgMTXtjGcoA2u3HNXFuhmSYn9efU4UjZgHlulWcU7h1r4TeHi6SeHw61++Nraf97dvBSKDn5JycTt1Zqo8XDfyfH7lT/riIJAfq9FZ7qeNIpC7hRXymyz1FaznYNJK5HqoMWXf2Dx4dE4hloJWCzyu1k5ZWNeZGlnRWk9rhKztpw/GTxqOGK7qiOkZLjaL+taZfzD8gkmMNJHLummaUn0m0j4QSHZQSr98rTi2uXCKkQTH017AD08Be3LluLw+yt9xZ5Q3dyho9fnpQ==
+    KEYCLOAK_ADMIN_PASSWORD: AgCe5eqrSg9CF2gZ3KEzq9COgDImByRykK/5oopeF/Dc0iNZGUfuZfJK+beEoTg6DVwwrPUrpoyqkI8gri0CPMvmrxU4N1udlt3L3HdKeEZJxIOef1ZgUCpC1tjL1u680IRLnLtWpTl/ZQklZ9lV+l/aW0CUZ1plA13+0nOg+ENSvCTg3TWNYgSa6JctduVWENPyuX5pj1bWyxgJreO+tQ9b/NgQ9YS4u+k7l1JX/0B3sl1XJc3EMURDwWYnNAGrOIjTnn7m/6im8iFq3qRBzRUx91fsr8LKqTVOdSZ+DJFB4txVFiMLkapeMm/u/g/6exHg46k3IvI0oaKNJ4ms82S6352hnHk5OQi2TBr1nya+lMV1gXdMbIFzR1//aUcX6216DyTOdGYg+igcWovOr3IYkNG7yTRCl0AwMkd14L7JOh+/9/J7BG34hqUh7Lt2HoMPLAQhfG2fV+/gDJWyTIUjD1ydExt68rMbaKE1mWfaf9Uz3fPrQuLic0dObURKtpWaJ1lw3lm31BbapIpxHIzScZX2/aRZD8iGmKsc0WCgGY0jhPQYt1AjXvXJ0tTN91Qtvs43+lDG1JstTe0a7eeRZ5xgIBWBuKJm+1Z/45MhMrbz3AKufjBuXrg2W0jR5SeabQUb+49oYx1AZSgn9d94/uV8X7qdEgFOSfnlJnY62TEvBS/G4q0Xh+ZcMWoBVtB3belJkoEdQAXVNTCkyhvdFQs=
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: keycloak-admin-secret
+      namespace: keycloak
+    type: Opaque
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: keycloak-mariadb-secret
+  namespace: keycloak
+spec:
+  encryptedData:
+    mariadb-password: AgCXwXaNRDSHymjTqq7WDr4gprXhtkpQWRBRHNyxirmXWJmFH2QV9dn90EYbjYGaUOjEKTdjLlbWxQHVhnGlG1h97E9pPuW3tDfaCB11I5QsLYtU35JrHpFFCCQ6I6W3NHFNGJJ1uUg/+YNwa7ELpOnysfTouzwRBWf//UX98I5Cc8LRWAw7XbNgb4kuNItdtJhsvf0iR3eUc0vtTo3T820bj3m6nJa7O49iKMpsS1a/qRka5YyXm459wGkJyM1ucVR6tuOM5Pb7rF+9sbLQYu4sPMy0xA8mSIwvy33zDWXC7COAWj1Ouq0fLEXOYJiZ+LsCtbjRyNhuB7BQKix5ItZmZ07QWo8+EVothfdIetJAzj1Fii3gH2ttS+yGK7XoQS/uu+/zARPbhfyF1OYIkkVIggyPfvhcU/uyPVTgtT/+ziI/nPYHYnBOsRMBTT8Hyl3Xs6AfPUUepLgAjGOUI5rA19SIxb0U4P18uZ3BhppXhwYmDZpio7eDNt/ANVufJTHIcvIq+dILNzdFuIo6nSgzQksnnFq1KFZdr255dyMfJtsoKUEvaENuW1L2puAxkZOmQM3948Tl7YoBBL2ygfz1Ls6fM31BBJLWWiVUJIFJ7T7XONF6towfHtB+AQCtG6M1a8MBxHSrYuCpX/rma0qFc6Tfiq50ThxFk3rHif2Ws1aBafOzwr+i4o6M5dOeuxRT7G/B7Mfw0Tm8fU6eMv4=
+    mariadb-replication-password: AgCSe0jR4OeBBqV+39ILoTQhbHZnXymwhwyiUtme+gx6O6dklHEwRo5UWGJSslRMymzJbeJ+reccE9VeyO4niiDGyxuIeot6qazKHBPXUJqqMNC1BfnhEAMINm2wwVmrNfdGkz13xrm1m4QpQD6vYZ20zJlsPD3i5B/RFlgPjdoo/48rz/AVoQA2PzYofi72nsuf41k0oPqRKUkYaw87nhjEdPBZw85wMihy5ZBCH71TpW9QVNtnIxIr37FtnW0p0OKeAbw5pg34JAwz22vB7fOImFgFWXydvm2XI4u0eBh+8Eb+pUMfhFvdcNWX1mPd9z8yfPsNi/7cXnVaEaot2X2uNzBbCJTWwVDzl1aiZlY3I7LAElMEBFZYCKNxmMB2FvxMx1HLSRHQ0by/+b6b8dayK0xnOo5OSRp9WGmBf5B6/zBSvtsP7zAkaLkpqUEHLnJ7NTscQr5gfqhLlMI2emZEmlmFPhAfU2ZoBrxftUR0JBvLkDcjjopRA62RnRds6UrrRm/GHmgr3eWj9sq5ibeOPRxJfztOd5yRDt1BtignaMDddgJyXQaNnXLdF6LUY1uIxyVnwCFUnZt9gQO2mElYHgHt4SgSsADOblHBlnWSnxTtQxvMwJLCPdB6XK47y8guu4Ns0ZOehZ5XIdJwo05ow3CaRXzmbFoHv0Q9HpEZICRoL8U2/lSQGdEQ4vxez7Oy5iOPgtJoiLdBFn5HldsJ
+    mariadb-root-password: AgDPHFgvCoI75jXIUAdwkqasT95X6B3Jxn8JL63HQPE4uxU8qPA5MIilwOLkEfslvTqTxvOYv3ppixXVBaMbd4JlnxU9p3J4PuyuMSuQwwXmD1Vnyq+ug23gZsj9mrVeRvZ2PDRrVgq84jC87638q6Ll+7mipu5nX0l6mEHCajyHm5DTunHOVu2TAvtxvw/JMAaUUoxuMvOesJ7xUp9UPlQjMJKw9kzpvU314Qk9eYLPJSO/qe98nl7MOBO7KXLMcbPBlKscl8cYCetughulu1+f+hxzooSHirWICPbrvQVJl43mRRLouC/SD+wupe1WiAdnLa6H00hNiGmu2yZdVPxQMglfGoJayzIXxLKLlrCFWD/sIREQXIHv65SF6vQjnagWp7v1W3AqU8dIHRs0uVAfjFfms2Ru9WqNUGVg5ckDaxEhGfWzTBm8Xx1OhfSiHaqF8JL5nrACkgWQfLVsisXoLOQjgcQ85bcvWjSPFZW48PWBz/g8nohnILcYvsrFFB1PzPTBIy4doornpiPwHSEX+BxaNkD201z8WxchsW5ASJcfaC71rLHR8ylSO1WM6kSApCx6bile3wJmsPYFSwACtMN5Y8+cRTD4K1OZfBN5nmT7iqGBxNdjN9rl4qm5XulghwxulTilf479FqNzkr/OXzJTsbLaIWHC7mZEOxmbTHEwIgJ61w55KlwUPK4SKgtBoys51cQox7VK6VzcEBl8xJrw
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: keycloak-mariadb-secret
+      namespace: keycloak
+    type: Opaque
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: keycloak-server-cert-secret
+  namespace: keycloak
+spec:
+  encryptedData:
+    ca.pem: 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
+    cert.pem: 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
+    key.pem: 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
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: keycloak-server-cert-secret
+      namespace: keycloak
+    type: Opaque
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: keycloak-pool-sr3
+  namespace: metallb-system
+spec:
+  addresses:
+  - 90.190.54.233/32
+  autoAssign: true
+  avoidBuggyIPs: true
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: keycloak-pool-sr6
+  namespace: metallb-system
+spec:
+  addresses:
+  - 194.106.115.169/32
+  autoAssign: true
+  avoidBuggyIPs: true
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: keycloak-pool-sr3
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - keycloak-pool-sr3
+  nodeSelectors:
+  - matchLabels:
+      topology.kubernetes.io/zone: SR3
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: keycloak-pool-sr6
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - keycloak-pool-sr6
+  nodeSelectors:
+  - matchLabels:
+      topology.kubernetes.io/zone: SR6

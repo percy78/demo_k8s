@@ -1,0 +1,69 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: keycloak
+
+resources:
+  - metallb-ipadress-pool.yaml
+  - metallb-l2-advertisement.yaml
+
+helmCharts:
+- name: keycloakx # Accepts a string. The name of the chart. This field is required.
+  # Accepts a string. The URL used to locate the chart
+  repo: https://codecentric.github.io/helm-charts
+  # Accepts a string. The version of the chart
+  version: 2.1.1
+  # Accepts a string. Replaces RELEASE_NAME in the chart template output
+  releaseName: keycloak
+  # Accepts a string. Sets the target namespace
+  # for a release (.Release.Namespace in the template)
+  namespace: keycloak
+  # Accepts a string. ValuesFile is a local file path or a remote URL to a
+  # values file to use instead of the default values that accompanied the chart.
+  # The default values are in CHART_HOME/NAME/values.yaml.
+  valuesFile: ./values_keycloak.yaml
+  # Accepts merge, override, (default), or replace.
+  # ValuesMerge specifies how to treat ValuesInline with respect to Values.
+  valuesMerge: override
+  # Accepts true or false. Specifies if Helm should also generate
+  # CustomResourceDefinitions. The default value is false.
+  includeCRDs: false
+- name: nginx # Accepts a string. The name of the chart. This field is required.
+  # Accepts a string. The URL used to locate the chart
+  repo: https://charts.bitnami.com/bitnami
+  # Accepts a string. The version of the chart
+  version: 13.2.24
+  # Accepts a string. Replaces RELEASE_NAME in the chart template output
+  releaseName: nginx
+  # Accepts a string. Sets the target namespace
+  # for a release (.Release.Namespace in the template)
+  namespace: keycloak
+  # Accepts a string. ValuesFile is a local file path or a remote URL to a
+  # values file to use instead of the default values that accompanied the chart.
+  # The default values are in CHART_HOME/NAME/values.yaml.
+  valuesFile: ./values_nginx.yaml
+  # Accepts merge, override, (default), or replace.
+  # ValuesMerge specifies how to treat ValuesInline with respect to Values.
+  valuesMerge: override
+  # Accepts true or false. Specifies if Helm should also generate
+  # CustomResourceDefinitions. The default value is false.
+  includeCRDs: false
+- name: mariadb-galera
+  # Accepts a string. The URL used to locate the chart
+  repo: https://charts.bitnami.com/bitnami
+  # Accepts a string. The version of the chart
+  version: 7.5.1
+  # Accepts a string. Replaces RELEASE_NAME in the chart template output
+  releaseName: mariadb
+  # Accepts a string. Sets the target namespace
+  # for a release (.Release.Namespace in the template)
+  namespace: keycloak
+  # Accepts a string. ValuesFile is a local file path or a remote URL to a
+  # values file to use instead of the default values that accompanied the chart.
+  # The default values are in CHART_HOME/NAME/values.yaml.
+  valuesFile: ./values_mariadb.yaml
+  # Accepts merge, override, (default), or replace.
+  # ValuesMerge specifies how to treat ValuesInline with respect to Values.
+  valuesMerge: override
+  # Accepts true or false. Specifies if Helm should also generate
+  # CustomResourceDefinitions. The default value false.
+  includeCRDs: false
