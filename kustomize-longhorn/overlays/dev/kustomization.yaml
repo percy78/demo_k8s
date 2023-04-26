@@ -6,11 +6,6 @@ resources:
 
 patches:
   # Resource requests and limits for nginx
-  - path: ./patches/json/replicas/replace-replicas-count-longhorn-manager.json
-    target:
-      kind: DaemonSet
-      name: longhorn-manager
-      namespace: longhorn-argocd
   - path: ./patches/json/replicas/replace-replicas-count-conversion-webhook.json
     target:
       kind: Deployment
