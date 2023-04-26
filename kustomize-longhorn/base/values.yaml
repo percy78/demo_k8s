@@ -79,7 +79,7 @@ persistence:
   defaultClass: true
   defaultFsType: ext4
   defaultMkfsParams: ""
-  defaultClassReplicaCount: 8
+  defaultClassReplicaCount: 3
   defaultDataLocality: disabled # best-effort otherwise
   reclaimPolicy: Delete
   migratable: false
@@ -95,7 +95,6 @@ persistence:
   defaultNodeSelector:
     enable: false # disable by default
     selector: []
-    #daas.teliacompany.net/type: application_node
   removeSnapshotsDuringFilesystemTrim: ignored # "enabled" or "disabled" otherwise
 
 csi:
@@ -110,7 +109,7 @@ defaultSettings:
   backupTargetCredentialSecret: ~
   allowRecurringJobWhileVolumeDetached: ~
   createDefaultDiskLabeledNodes: ~
-  defaultDataPath: /data/rancher/d1
+  defaultDataPath: /mnt/nobiadevbackups/test
   defaultDataLocality: ~
   replicaSoftAntiAffinity: ~
   replicaAutoBalance: ~
@@ -178,10 +177,9 @@ longhornManager:
   #   operator: "Equal"
   #   value: "value"
   #   effect: "NoSchedule"
-  nodeSelector: 
+  nodeSelector: {}
   ## If you want to set node selector for Longhorn Manager DaemonSet, delete the `{}` in the line above
   ## and uncomment this example block
-    "daas.teliacompany.net/type": "application_node"
   #  label-key1: "label-value1"
   #  label-key2: "label-value2"
   serviceAnnotations: {}
@@ -289,7 +287,6 @@ ingress:
   tlsSecret: longhorn.local-tls
 
   ## If ingress is enabled you can set the default ingress path
-  #t
   ## then you can access the UI by using the following full path {{host}}+{{path}}
   path: /
 

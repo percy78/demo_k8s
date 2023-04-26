@@ -4044,7 +4044,7 @@ data:
 
 
 
-    default-data-path: /data/rancher/d1
+    default-data-path: /mnt/nobiadevbackups/test
 kind: ConfigMap
 metadata:
   labels:
@@ -4070,7 +4070,7 @@ data:
     reclaimPolicy: "Delete"
     volumeBindingMode: Immediate
     parameters:
-      numberOfReplicas: "8"
+      numberOfReplicas: "3"
       staleReplicaTimeout: "30"
       fromBackup: ""
       fsType: "ext4"
@@ -4229,48 +4229,6 @@ spec:
   selector:
     longhorn.io/component: instance-manager
     longhorn.io/instance-manager-type: replica
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    metallb.universe.tf/address-pool: longhorn-pool-sr3
-  labels:
-    app: longhorn-ui
-    app.kubernetes.io/instance: longhorn
-    component: longhorn-gui
-  name: longhorn-site-1
-  namespace: longhorn-argocd
-spec:
-  allocateLoadBalancerNodePorts: true
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8000
-  selector:
-    app: longhorn-ui
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    metallb.universe.tf/address-pool: longhorn-pool-sr6
-  labels:
-    app: longhorn-ui
-    app.kubernetes.io/instance: longhorn
-    component: longhorn-gui
-  name: longhorn-site-2
-  namespace: longhorn-argocd
-spec:
-  allocateLoadBalancerNodePorts: true
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8000
-  selector:
-    app: longhorn-ui
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -4710,8 +4668,6 @@ spec:
           != "200" ]; do echo waiting; sleep 2; done
         image: longhornio/longhorn-manager:v1.4.0
         name: wait-longhorn-admission-webhook
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
       serviceAccountName: longhorn-service-account
       volumes:
       - hostPath:
@@ -4772,8 +4728,6 @@ spec:
         name: longhorn-post-upgrade
         securityContext:
           privileged: true
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
       restartPolicy: OnFailure
       serviceAccountName: longhorn-service-account
 ---
@@ -4819,53 +4773,5 @@ spec:
         name: longhorn-uninstall
         securityContext:
           privileged: true
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
       restartPolicy: Never
       serviceAccountName: longhorn-service-account
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: longhorn-pool-sr3
-  namespace: metallb-system
-spec:
-  addresses:
-  - 90.190.54.242-90.190.54.242
-  autoAssign: true
-  avoidBuggyIPs: true
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: longhorn-pool-sr6
-  namespace: metallb-system
-spec:
-  addresses:
-  - 194.106.115.178-194.106.115.178
-  autoAssign: true
-  avoidBuggyIPs: true
----
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: longhorn-pool-sr3
-  namespace: metallb-system
-spec:
-  ipAddressPools:
-  - longhorn-pool-sr3
-  nodeSelectors:
-  - matchLabels:
-      topology.kubernetes.io/zone: sr6
----
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: longhorn-pool-sr6
-  namespace: metallb-system
-spec:
-  ipAddressPools:
-  - longhorn-pool-sr6
-  nodeSelectors:
-  - matchLabels:
-      topology.kubernetes.io/zone: SR6
