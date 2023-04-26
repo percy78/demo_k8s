@@ -3,3 +3,36 @@ kind: Kustomization
 #namePrefix:  dev-
 resources:
 - ../../base
+
+patches:
+  # Resource requests and limits for nginx
+  - path: ./patches/json/replicas/replace-replicas-count-longhorn-manager.json
+    target:
+      kind: DaemonSet
+      name: longhorn-manager
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-conversion-webhook.json
+    target:
+      kind: Deployment
+      name: longhorn-conversion-webhook
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-recovery-backend.json
+    target:
+      kind: Deployment
+      name: longhorn-recovery-backend
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-driver-deployer.json
+    target:
+      kind: Deployment
+      name: longhorn-driver-deployer
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-admission-webhook.json
+    target:
+      kind: Deployment
+      name: longhorn-admission-webhook
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-ui.json
+    target:
+      kind: Deployment
+      name: longhorn-ui
+      namespace: longhorn-argocd
