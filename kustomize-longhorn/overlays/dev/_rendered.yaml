@@ -4596,7 +4596,6 @@ metadata:
   name: longhorn-manager
   namespace: longhorn-argocd
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: longhorn-manager
