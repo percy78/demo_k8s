@@ -1,0 +1,11 @@
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: longhorn-pool-sr3
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - longhorn-pool-sr3
+  nodeSelectors:
+  - matchLabels:
+      topology.kubernetes.io/zone: sr6

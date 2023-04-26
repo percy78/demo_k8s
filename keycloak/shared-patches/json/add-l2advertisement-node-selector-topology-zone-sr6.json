@@ -1,9 +1,0 @@
-[
-  {
-    "op": "add",
-    "path": "/spec/nodeSelectors/0/matchLabels",
-    "value": {
-      "topology.kubernetes.io/zone": "SR6"
-    }
-  }
-]
