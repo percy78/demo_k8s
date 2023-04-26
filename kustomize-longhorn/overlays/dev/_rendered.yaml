@@ -4419,6 +4419,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.serviceAccountName
+        - name: KUBELET_ROOT_DIR
+          value: /
         - name: CSI_ATTACHER_IMAGE
           value: longhornio/csi-attacher:v3.4.0
         - name: CSI_PROVISIONER_IMAGE
