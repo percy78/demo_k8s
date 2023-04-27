@@ -109,7 +109,7 @@ defaultSettings:
   backupTargetCredentialSecret: ~
   allowRecurringJobWhileVolumeDetached: ~
   createDefaultDiskLabeledNodes: ~
-  defaultDataPath: /mnt/nobiadevbackups/test
+  defaultDataPath: /tmp/test
   defaultDataLocality: ~
   replicaSoftAntiAffinity: ~
   replicaAutoBalance: ~
