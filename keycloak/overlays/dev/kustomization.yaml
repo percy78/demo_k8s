@@ -5,4 +5,4 @@ resources:
 - ../../base
 
 resources:
-- ./pvc-data-keycloak-db-1.yaml
+- ./pvc-data-mariadb-0.yaml
