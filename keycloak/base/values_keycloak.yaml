@@ -366,7 +366,7 @@ route:
     termination: edge
 
 dbchecker:
-  enabled: enabled
+  enabled: false
   image:
     # Docker image used to check Database readiness at startup
     repository: docker.io/busybox
