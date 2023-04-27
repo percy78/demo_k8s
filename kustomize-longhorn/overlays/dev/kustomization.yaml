@@ -5,7 +5,7 @@ resources:
 - ../../base
 
 patches:
-  # Resource requests and limits for nginx
+  # Replicas for longhorn deployment
   - path: ./patches/json/replicas/replace-replicas-count-conversion-webhook.json
     target:
       kind: Deployment
@@ -30,24 +30,4 @@ patches:
     target:
       kind: Deployment
       name: longhorn-ui
-      namespace: longhorn-argocd
-  - path: ./patches/json/replicas/replace-replicas-count-csi-attacher.json
-    target:
-      kind: Deployment
-      name: csi-attacher
-      namespace: longhorn-argocd
-  - path: ./patches/json/replicas/replace-replicas-count-csi-provisioner.json
-    target:
-      kind: Deployment
-      name: csi-provisioner
-      namespace: longhorn-argocd
-  - path: ./patches/json/replicas/replace-replicas-count-csi-resizer.json
-    target:
-      kind: Deployment
-      name: csi-resizer
-      namespace: longhorn-argocd
-  - path: ./patches/json/replicas/replace-replicas-count-csi-snapshotter.json
-    target:
-      kind: Deployment
-      name: csi-snapshotter
       namespace: longhorn-argocd
