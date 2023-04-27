@@ -1,7 +1,0 @@
-[
-  {
-    "op": "replace",
-    "path": "/spec/ipAddressPools",
-    "value": ["keycloak-pool-sr6"]
-  }
-]

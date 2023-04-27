@@ -1,7 +1,0 @@
-[
-  {
-    "op": "replace",
-    "path": "/spec/template/spec/nodeSelector/topology.kubernetes.io~1zone",
-    "value": "SR3"
-  }
-]

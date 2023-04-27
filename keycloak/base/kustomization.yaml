@@ -2,9 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: keycloak
 
-resources:
-  - metallb-ipadress-pool.yaml
-  - metallb-l2-advertisement.yaml
 
 helmCharts:
 - name: keycloakx # Accepts a string. The name of the chart. This field is required.
@@ -31,7 +28,7 @@ helmCharts:
   # Accepts a string. The URL used to locate the chart
   repo: https://charts.bitnami.com/bitnami
   # Accepts a string. The version of the chart
-  version: 13.2.24
+  version: 14.0.0
   # Accepts a string. Replaces RELEASE_NAME in the chart template output
   releaseName: nginx
   # Accepts a string. Sets the target namespace
@@ -47,11 +44,11 @@ helmCharts:
   # Accepts true or false. Specifies if Helm should also generate
   # CustomResourceDefinitions. The default value is false.
   includeCRDs: false
-- name: mariadb-galera
+- name: mariadb
   # Accepts a string. The URL used to locate the chart
   repo: https://charts.bitnami.com/bitnami
   # Accepts a string. The version of the chart
-  version: 7.5.1
+  version: 12.1.2
   # Accepts a string. Replaces RELEASE_NAME in the chart template output
   releaseName: mariadb
   # Accepts a string. Sets the target namespace

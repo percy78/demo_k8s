@@ -5,7 +5,7 @@ fullnameOverride: "keycloak"
 nameOverride: ""
 
 # The number of replicas to create (has no effect if autoscaling enabled)
-replicas: 2
+replicas: 1
 
 image:
   # The Keycloak image repository
@@ -103,11 +103,11 @@ terminationGracePeriodSeconds: 60
 clusterDomain: cluster.local
 
 ## Overrides the default entrypoint of the Keycloak container
-command:
+command: 
   - "/opt/keycloak/bin/kc.sh"
 
 ## Overrides the default args for the Keycloak container
-args:
+args: 
   - "--verbose"
   - "start"
   - "--spi-events-listener-jboss-logging-success-level=info"
@@ -124,7 +124,7 @@ extraEnv: |
   - name: KC_HTTP_PORT
     value: "8080"
   - name: KC_HOSTNAME_STRICT
-    value: "true"
+    value: "false"
   - name: KC_HOSTNAME_STRICT_HTTPS
     value: "true"
   - name: KC_HOSTNAME_STRICT_BACKCHANNEL
@@ -137,9 +137,7 @@ extraEnv: |
       -Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
-extraEnvFrom: |
-  - secretRef:
-      name: keycloak-admin-secret
+extraEnvFrom: ""
 
 #  Pod priority class name
 priorityClassName: ""
@@ -174,9 +172,7 @@ affinity: |
 topologySpreadConstraints:
 
 # Node labels for Pod assignment
-nodeSelector:
-  "daas.teliacompany.net/type": "application_node"
-  "topology.kubernetes.io/zone": "CHANGE-ME"
+nodeSelector: {}
 
 # Node taints to tolerate
 tolerations: []
@@ -214,30 +210,27 @@ startupProbe: |
   periodSeconds: 5
 
 # Pod resource requests and limits
-resources:
-  requests:
-    cpu: "500m"
-    memory: "1024Mi"
-  limits:
-    cpu: "500m"
-    memory: "1024Mi"
+resources: 
+   requests:
+     cpu: "100m"
+     memory: "512Mi"
+   limits:
+     cpu: "100m"
+     memory: "512Mi"
 
 # Add additional volumes, e. g. for custom themes
 extraVolumes: ""
 
 # Add additional volumes mounts, e. g. for custom themes
 extraVolumeMounts: ""
-#  - name: server-cert-secret-volume
-#    mountPath: /etc/server-cert-secret-volume
-#    readOnly: true
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts: []
 
 # Pod disruption budget
 podDisruptionBudget: {}
-  # maxUnavailable: 1
-  # minAvailable: 1
+#  maxUnavailable: 1
+#  minAvailable: 1
 
 # Annotations for the StatefulSet
 statefulsetAnnotations: {}
@@ -256,13 +249,11 @@ secrets: {}
 
 service:
   # Annotations for HTTP service
-  #annotations:
-  #  metallb.universe.tf/address-pool: CHANGE-ME
+  annotations: {}
   # Additional labels for headless and HTTP Services
   labels: {}
   # key: value
   # The Service type
-  #type: LoadBalancer
   type: ClusterIP
   # Optional IP for the load balancer. Used for services of type LoadBalancer only
   loadBalancerIP: ""
@@ -271,7 +262,7 @@ service:
   # The HTTP Service node port if type is NodePort
   httpNodePort: null
   # The HTTPS Service port
-  httpsPort: null
+  httpsPort: 8443
   # The HTTPS Service node port if type is NodePort
   httpsNodePort: null
   # Additional Service ports, e. g. for custom admin console
@@ -298,7 +289,7 @@ ingress:
   # If `true`, an Ingress is created
   enabled: false
   # The name of the Ingress Class associated with this ingress
-  ingressClassName: "nginx-ingress-keycloak"
+  ingressClassName: ""
   # The Service port targeted by the Ingress
   servicePort: http
   # Ingress annotations
@@ -313,7 +304,7 @@ ingress:
   rules:
     -
       # Ingress host
-      host: 'grdevkeycloak.estpak.ee'
+      host: '{{ .Release.Name }}.keycloak.example.com'
       # Paths for the host
       paths:
         - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/'
@@ -321,7 +312,7 @@ ingress:
   # TLS configuration
   tls:
     - hosts:
-        - 'grdevkeycloak.estpak.ee'
+        - keycloak.example.com
       secretName: ""
 
   # ingress for console only (/auth/admin)
@@ -393,7 +384,7 @@ route:
     termination: edge
 
 dbchecker:
-  enabled: enabled
+  enabled: false
   image:
     # Docker image used to check Database readiness at startup
     repository: docker.io/busybox
@@ -420,17 +411,15 @@ database:
   # don't create secret for db password. Instead use existing k8s secret
   # existingSecret: "my-existent-dbpass-secret"
   # existingSecretKey: "password"
-  existingSecret: "keycloak-db-secret"
-  existingSecretKey: "mariadb-password"
+  existingSecret: ""
+  existingSecretKey: ""
   # E.g. dev-file, dev-mem, mariadb, mssql, mysql, oracle or postgres
   vendor: mariadb
-  # will be added from overlay
-  hostname: "keycloak-db.keycloak.svc.cluster.local"
+  hostname: mariadb.keycloak.svc.cluster.local
   port: 3306
-  database: keycloak
-  username: keycloak-admin
-  # obtained from existing secret > keycloak-db-secret.mariadb-password
-  password:
+  database: demo
+  username: admin
+  password: kalle
 
 cache:
   # Use "custom" to disable automatic cache configuration
@@ -447,8 +436,8 @@ health:
   enabled: true
 
 http:
- # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
- relativePath: "/"
+  # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+  relativePath: "/auth"
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created

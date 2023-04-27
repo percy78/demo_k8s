@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+#namePrefix:  dev-
+resources:
+- ../../base
+
+patches:
+  # Replicas for longhorn deployment
+  - path: ./patches/json/replicas/replace-replicas-count-conversion-webhook.json
+    target:
+      kind: Deployment
+      name: longhorn-conversion-webhook
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-recovery-backend.json
+    target:
+      kind: Deployment
+      name: longhorn-recovery-backend
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-driver-deployer.json
+    target:
+      kind: Deployment
+      name: longhorn-driver-deployer
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-admission-webhook.json
+    target:
+      kind: Deployment
+      name: longhorn-admission-webhook
+      namespace: longhorn-argocd
+  - path: ./patches/json/replicas/replace-replicas-count-ui.json
+    target:
+      kind: Deployment
+      name: longhorn-ui
+      namespace: longhorn-argocd

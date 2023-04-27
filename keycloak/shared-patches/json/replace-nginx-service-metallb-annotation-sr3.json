@@ -1,7 +1,0 @@
-[
-  {
-    "op": "replace",
-    "path": "/metadata/annotations/metallb.universe.tf~1address-pool",
-    "value": "keycloak-pool-sr3"
-  }
-]
