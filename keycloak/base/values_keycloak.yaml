@@ -124,7 +124,7 @@ extraEnv: |
   - name: KC_HTTP_PORT
     value: "8080"
   - name: KC_HOSTNAME_STRICT
-    value: "true"
+    value: "false"
   - name: KC_HOSTNAME_STRICT_HTTPS
     value: "true"
   - name: KC_HOSTNAME_STRICT_BACKCHANNEL
