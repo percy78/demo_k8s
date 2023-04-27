@@ -496,7 +496,7 @@ cloneStaticSiteFromGit:
 ##
 serverBlock: |-
   server {
-    listen 8443 ssl;
+    listen 80 ;
   
     include /opt/bitnami/nginx/conf/mime.types;
     default_type application/octet-stream;
@@ -508,14 +508,14 @@ serverBlock: |-
     # Enabling SSL session cache improves the performance of HTTPS websites. 
     # The following directives must be placed after ssl_trusted_certificate. 
     # They enable shared caching of size 20MB with a cache lifetime of 10 minutes.
-    ssl_session_cache shared:SSL:20m;
-    ssl_session_timeout 10m;
+    #ssl_session_cache shared:SSL:20m;
+    #ssl_session_timeout 10m;
   
     # Specify the protocols and ciphers to be used in the SSL connection. 
     # Here we are allowing only TLS v1.3 and disabled insecure ciphers like MD5 and DSS.
-    ssl_prefer_server_ciphers       on;
-    ssl_protocols TLSv1.3;
-    ssl_ciphers  HIGH:!aNULL:!MD5:!DSS;
+    #ssl_prefer_server_ciphers       on;
+    #ssl_protocols TLSv1.3;
+    #ssl_ciphers  HIGH:!aNULL:!MD5:!DSS;
   
     location / {
       proxy_set_header Host $host;
