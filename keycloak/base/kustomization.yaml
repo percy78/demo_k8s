@@ -28,7 +28,7 @@ helmCharts:
   # Accepts a string. The URL used to locate the chart
   repo: https://charts.bitnami.com/bitnami
   # Accepts a string. The version of the chart
-  version: 13.2.24
+  version: 14.0.0
   # Accepts a string. Replaces RELEASE_NAME in the chart template output
   releaseName: nginx
   # Accepts a string. Sets the target namespace
