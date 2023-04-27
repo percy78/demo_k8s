@@ -1,5 +1,5 @@
 # Optionally override the fully qualified name
-fullnameOverride: ""
+fullnameOverride: "keycloak"
 
 # Optionally override the name
 nameOverride: ""
@@ -103,10 +103,15 @@ terminationGracePeriodSeconds: 60
 clusterDomain: cluster.local
 
 ## Overrides the default entrypoint of the Keycloak container
-command: []
+command: 
+  - "/opt/keycloak/bin/kc.sh"
 
 ## Overrides the default args for the Keycloak container
-args: []
+args: 
+  - "--verbose"
+  - "start"
+  - "--spi-events-listener-jboss-logging-success-level=info"
+  - "--spi-events-listener-jboss-logging-error-level=warn"
 
 # Additional environment variables for Keycloak
 extraEnv: ""
@@ -361,7 +366,7 @@ route:
     termination: edge
 
 dbchecker:
-  enabled: false
+  enabled: enabled
   image:
     # Docker image used to check Database readiness at startup
     repository: docker.io/busybox
