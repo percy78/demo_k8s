@@ -2,6 +2,6 @@
   {
     "op": "replace",
     "path": "/spec/replicas",
-    "value": 2
+    "value": 1
   }
 ]
