@@ -4,3 +4,11 @@ kind: Kustomization
 resources:
 - ../../base
 - ./pvc-data-mariadb-0.yaml
+
+patches:
+  # Replicas for longhorn deployment
+  - path: ./patches/json/resourcelimits/replace-resource-limits-keycloak.json
+    target:
+      kind: StatefulSet
+      name: keycloak
+      namespace: keycloak

@@ -4044,7 +4044,7 @@ data:
 
 
 
-    default-data-path: /mnt/nobiadevbackups/test
+    default-data-path: /tmp/test
 kind: ConfigMap
 metadata:
   labels:

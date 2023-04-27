@@ -211,12 +211,12 @@ startupProbe: |
 
 # Pod resource requests and limits
 resources: {}
-  # requests:
-  #   cpu: "500m"
-  #   memory: "1024Mi"
-  # limits:
-  #   cpu: "500m"
-  #   memory: "1024Mi"
+#   requests:
+#     cpu: "100m"
+#     memory: "512Mi"
+#   limits:
+#     cpu: "100m"
+#     memory: "512Mi"
 
 # Add additional volumes, e. g. for custom themes
 extraVolumes: ""
