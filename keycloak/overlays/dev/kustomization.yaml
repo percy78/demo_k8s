@@ -3,6 +3,4 @@ kind: Kustomization
 #namePrefix:  dev-
 resources:
 - ../../base
-
-resources:
 - ./pvc-data-mariadb-0.yaml
