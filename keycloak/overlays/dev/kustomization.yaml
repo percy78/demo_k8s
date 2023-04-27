@@ -3,3 +3,6 @@ kind: Kustomization
 #namePrefix:  dev-
 resources:
 - ../../base
+
+resources:
+- ./pvc-data-keycloak-db-1.yaml
