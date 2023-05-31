@@ -7,7 +7,7 @@
   {
     "op": "replace",
     "path": "/spec/template/spec/containers/0/resources/limits/memory",
-    "value": "512Mi"
+    "value": "256Mi"
   },
   {
     "op": "replace",
@@ -17,6 +17,6 @@
   {
     "op": "replace",
     "path": "/spec/template/spec/containers/0/resources/requests/memory",
-    "value": "256Mi"
+    "value": "128Mi"
   }
 ]
