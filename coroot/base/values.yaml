@@ -56,7 +56,7 @@ corootCE:
       memory: 1Gi
   persistentVolume:
     size: 10Gi
-    storageClassName: "longhorn"
+    storageClassName: "microk8s-hostpath"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -116,7 +116,7 @@ prometheus:
     retention: 1d
     persistentVolume:
       size: 10Gi
-      storageClassName: "longhorn"
+      storageClassName: "microk8s-hostpath"
 
 existingPrometheus:
   enabled: false
