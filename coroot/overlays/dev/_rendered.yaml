@@ -1002,7 +1002,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  admin-password: TThiQThXZDh3Sw==
+  admin-password: aXlja2QwRlhqMA==
 kind: Secret
 metadata:
   labels:
@@ -1241,6 +1241,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  storageClassName: longhorn
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
