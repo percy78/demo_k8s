@@ -31,6 +31,12 @@ patches:
       kind: Deployment
       name: velero
       namespace: velero
+  # Resource requests and limits for velero upgrade crds
+  - path: ./patches/json/resourcelimits/replace-resource-limits-velero.json
+    target:
+      kind: Job
+      name: velero-upgrade-crds
+      namespace: velero
   # Resource requests and limits for node-agent
   - path: ./patches/json/resourcelimits/replace-resource-limits-node-agent.json
     target:

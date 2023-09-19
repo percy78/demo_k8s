@@ -411,11 +411,11 @@ spec:
         name: velero
         resources:
           limits:
-            cpu: 0m
-            memory: 0Mi
+            cpu: 250m
+            memory: 64Mi
           requests:
-            cpu: 0m
-            memory: 0Mi
+            cpu: 250m
+            memory: 64Mi
         volumeMounts:
         - mountPath: /tmp
           name: crds
