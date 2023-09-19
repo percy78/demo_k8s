@@ -1,0 +1,10 @@
+[
+  {
+    "op": "add",
+    "path": "/spec/template/spec/containers/0/env/0",
+    "value": {
+      "name": "MIMIR_MINIO_ENDPOINT",
+      "value": "minio-sr3.tempo-minio-distributed.svc.cluster.local:9000"
+    }
+  }
+]

@@ -1,0 +1,39 @@
+# Tempo Development Environment Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+components:
+  - ../../components/velero/velero
+  - ../../components/velero/node-agent
+
+patches:
+
+  ###########################################################################################
+  ######################### Patch Resource replicas counts ##################################
+  ###########################################################################################
+
+  # Resource replicas counts for velero 
+  - path: ./patches/json/replicas/replace-replicas-count-velero.json
+    target:
+      kind: Deployment
+      name: velero
+      namespace: velero
+
+  ###########################################################################################
+  ######################### Patch Resource Requests and Limits ##############################
+  ###########################################################################################
+  # Resource requests and limits for velero
+  - path: ./patches/json/resourcelimits/replace-resource-limits-velero.json
+    target:
+      kind: Deployment
+      name: velero
+      namespace: velero
+  # Resource requests and limits for node-agent
+  - path: ./patches/json/resourcelimits/replace-resource-limits-node-agent.json
+    target:
+      kind: DaemonSet
+      name: node-agent
+      namespace: velero
