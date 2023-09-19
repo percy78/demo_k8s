@@ -237,7 +237,8 @@ primary:
   ## @param primary.podAnnotations Additional pod annotations for MariaDB primary pods
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations: 
+    "backup.velero.io/backup-volumes" : "data"
   ## @param primary.podLabels Extra labels for MariaDB primary pods
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
