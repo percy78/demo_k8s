@@ -272,9 +272,6 @@ spec:
         volumeMounts:
         - mountPath: /target
           name: plugins
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
-        topology.kubernetes.io/zone: CHANGE-ME
       restartPolicy: Always
       serviceAccountName: velero-server
       terminationGracePeriodSeconds: 3600
@@ -363,9 +360,6 @@ spec:
         - mountPath: /scratch
           name: scratch
       dnsPolicy: ClusterFirst
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
-        topology.kubernetes.io/zone: CHANGE-ME
       securityContext:
         runAsUser: 0
       serviceAccountName: velero-server
@@ -431,9 +425,6 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: crds
-      nodeSelector:
-        daas.teliacompany.net/type: application_node
-        topology.kubernetes.io/zone: CHANGE-ME
       restartPolicy: OnFailure
       serviceAccountName: velero-server-upgrade-crds
       volumes:

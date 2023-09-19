@@ -126,9 +126,7 @@ tolerations: []
 affinity: {}
 
 # Node selector to use for the Velero deployment. Optional.
-nodeSelector: 
-  "daas.teliacompany.net/type": "application_node"
-  "topology.kubernetes.io/zone": "CHANGE-ME"
+nodeSelector: {}
 
 # DNS configuration to use for the Velero deployment. Optional.
 dnsConfig: {}
@@ -524,9 +522,7 @@ nodeAgent:
   lifecycle: {}
 
   # Node selector to use for the node-agent daemonset. Optional.
-  nodeSelector: 
-    "daas.teliacompany.net/type": "application_node"
-    "topology.kubernetes.io/zone": "CHANGE-ME"
+  nodeSelector: {}
 
   # Affinity to use with node-agent daemonset. Optional.
   affinity: {}
