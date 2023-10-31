@@ -496,13 +496,11 @@ cloneStaticSiteFromGit:
 ##
 serverBlock: |-
   server {
-    listen 8443 ssl;
+    listen 80;
   
     include /opt/bitnami/nginx/conf/mime.types;
     default_type application/octet-stream;
     
-    ssl_certificate          /etc/server-cert-secret-volume/chain.pem;
-    ssl_certificate_key      /etc/server-cert-secret-volume/key.pem;
     # ssl_trusted_certificate  /etc/server-cert-secret-volume/ca.pem;
   
     # Enabling SSL session cache improves the performance of HTTPS websites. 
