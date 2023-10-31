@@ -110,7 +110,6 @@ command:
 args: 
   - "--verbose"
   - "start"
-  - "--optimized"
   - "--spi-events-listener-jboss-logging-success-level=info"
   - "--spi-events-listener-jboss-logging-error-level=warn"
 
@@ -438,7 +437,7 @@ health:
 
 http:
   # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
-  relativePath: "/auth"
+  relativePath: "/"
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created
