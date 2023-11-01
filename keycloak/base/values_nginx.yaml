@@ -510,7 +510,7 @@ serverBlock: |-
     # Specify the protocols and ciphers to be used in the SSL connection. 
     # Here we are allowing only TLS v1.3 and disabled insecure ciphers like MD5 and DSS.
   
-    location / {
+    location /tmp {
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_protocol_addr;
