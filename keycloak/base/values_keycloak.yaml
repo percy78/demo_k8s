@@ -109,8 +109,8 @@ command:
 ## Overrides the default args for the Keycloak container
 args: 
   - "--verbose"
-  - "start"
-  - "--optimized"
+  - "start-dev"
+  #- "--optimized"
   #- "--spi-events-listener-jboss-logging-success-level=info"
   #- "--spi-events-listener-jboss-logging-error-level=warn"
 
