@@ -449,8 +449,8 @@ credentials:
   secretContents: 
     cloud: |
       [default]
-       aws_access_key_id=nid2DViMhYyPTFOKdvlh
-       aws_secret_access_key=OdbEncHGeMkAWWW1QPnx2bJAmvY5deDZ3tfygzMb
+       aws_access_key_id=OkfZ36PhNC2FesxKbIBc
+       aws_secret_access_key=iDNqEk4Qjk6TjE5rkh2zVoXqzNEFJbQuWk8JZIJN
   # additional key/value pairs to be used as environment variables such as "DIGITALOCEAN_TOKEN: <your-key>". Values will be stored in the secret.
   extraEnvVars: {}
   # Name of a pre-existing secret (if any) in the Velero namespace
