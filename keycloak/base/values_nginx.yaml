@@ -494,50 +494,7 @@ cloneStaticSiteFromGit:
 ##     }
 ##   }
 ##
-serverBlock: |-
-  server {
-    listen 80;
-  
-    include /opt/bitnami/nginx/conf/mime.types;
-    default_type application/octet-stream;
-    
-    # ssl_trusted_certificate  /etc/server-cert-secret-volume/ca.pem;
-  
-    # Enabling SSL session cache improves the performance of HTTPS websites. 
-    # The following directives must be placed after ssl_trusted_certificate. 
-    # They enable shared caching of size 20MB with a cache lifetime of 10 minutes.
-  
-    # Specify the protocols and ciphers to be used in the SSL connection. 
-    # Here we are allowing only TLS v1.3 and disabled insecure ciphers like MD5 and DSS.
-  
-    location /tmp {
-      proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_protocol_addr;
-      proxy_set_header X-Forwarded-Proto $scheme;
-  
-      # When buffering of responses from the proxied server is enabled, limits the total size of 
-      # buffers that can be busy sending a response to the client while the response is not yet 
-      # fully read. In the meantime, the rest of the buffers can be used for reading the response 
-      # and, if needed, buffering part of the response to a temporary file. By default, size is 
-      # limited by the size of two buffers set by the proxy_buffer_size and proxy_buffers directives.
-      proxy_busy_buffers_size   512k;
-  
-      # Sets the number (4) and size (512k) of the buffers used for reading a response from the 
-      # proxied server, for a single connection.
-      proxy_buffers   4 512k;
-  
-      # Sets the size of the buffer used for reading the first part of the response received from 
-      # the proxied server. 
-      proxy_buffer_size   256k;
-  
-      proxy_read_timeout 60;
-      proxy_connect_timeout 60;
-      proxy_send_timeout 60;
-     
-      proxy_pass http://keycloak-http.keycloak.svc.cluster.local:80/;
-    }
-  }
+serverBlock: ""
 ## @param existingServerBlockConfigmap ConfigMap with custom server block to be added to NGINX configuration
 ## NOTE: This will override serverBlock
 ##
