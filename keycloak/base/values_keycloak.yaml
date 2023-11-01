@@ -111,8 +111,8 @@ args:
   - "--verbose"
   - "start"
   - "--optimized"
-  - "--spi-events-listener-jboss-logging-success-level=info"
-  - "--spi-events-listener-jboss-logging-error-level=warn"
+  #- "--spi-events-listener-jboss-logging-success-level=info"
+  #- "--spi-events-listener-jboss-logging-error-level=warn"
 
 # Additional environment variables for Keycloak
 extraEnv: ""
