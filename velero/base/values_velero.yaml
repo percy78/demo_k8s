@@ -302,7 +302,7 @@ configuration:
     config: 
       region: us-east-1
       s3ForcePathStyle: true
-      s3Url: http://10.65.110.199:9000
+      s3Url: http://172.17.0.2:9000
     #  kmsKeyId:
     #  resourceGroup:
     #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
