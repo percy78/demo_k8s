@@ -1,0 +1,15 @@
+apiVersion: v2
+dependencies:
+- condition: keycloak.enabled
+  name: keycloak
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.3.6
+- condition: postgresql.enabled
+  name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.x.x
+description: Identity Helm Chart for Kubernetes
+icon: https://helm.camunda.io/imgs/camunda.svg
+name: identity
+type: application
+version: 9.0.2
