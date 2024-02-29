@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: trident
+  storageClassName: microk8s-hostpath
   volumeMode: Filesystem
