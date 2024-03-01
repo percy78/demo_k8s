@@ -431,6 +431,15 @@ subjects:
   name: trident-operator
   namespace: trident
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-tbc-ontap-nas-secret
+stringData:
+  password: Proact123!
+  username: vsadmin
+type: Opaque
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -481,6 +490,20 @@ spec:
         imagePullPolicy: IfNotPresent
         name: trident-operator
       serviceAccountName: trident-operator
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: backend-tbc-ontap-nas
+spec:
+  backendName: ontap-nas-backend
+  credentials:
+    name: backend-tbc-ontap-nas-secret
+  dataLIF: teknikdag01nfs1.gotlab.proact.se
+  managementLIF: teknikdag01mgmt.gotlab.proact.se
+  storageDriverName: ontap-nas
+  svm: teknikdag01
+  version: 1
 ---
 apiVersion: trident.netapp.io/v1
 kind: TridentOrchestrator

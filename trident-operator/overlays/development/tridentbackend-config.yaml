@@ -1,0 +1,13 @@
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: backend-tbc-ontap-nas
+spec:
+  version: 1
+  backendName: ontap-nas-backend
+  storageDriverName: ontap-nas
+  managementLIF: teknikdag01mgmt.gotlab.proact.se
+  dataLIF: teknikdag01nfs1.gotlab.proact.se
+  svm: teknikdag01
+  credentials:
+    name: backend-tbc-ontap-nas-secret
