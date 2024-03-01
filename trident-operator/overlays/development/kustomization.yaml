@@ -7,5 +7,6 @@ resources:
   - ./secret
   - ./storageclass-trident-ontap-nas.yaml
   - ./tridentbackend-config.yaml
+  - ./pvc-data-trident.yaml
 
 

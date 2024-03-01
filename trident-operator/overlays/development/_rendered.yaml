@@ -440,6 +440,20 @@ stringData:
   username: vsadmin
 type: Opaque
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: trident-pvc
+  namespace: trident
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ontap-nas-auto-export
+  volumeMode: Filesystem
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
