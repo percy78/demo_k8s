@@ -6,6 +6,9 @@ spec:
   version: 1
   backendName: ontap-nas-backend
   storageDriverName: ontap-nas
+  autoExportCIDRs: 
+  - 10.1.161.0/24
+  autoExportPolicy: true
   managementLIF: teknikdag01mgmt.gotlab.proact.se
   dataLIF: teknikdag01nfs1.gotlab.proact.se
   svm: teknikdag01
