@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ./zones/sr3
+- ./zones/sr6
+- ./zones/kjj
+- ./secrets
+- ./pvc-data-keycloak-db-kjj-0.yaml
+- ./pvc-data-keycloak-db-sr6-0.yaml
+- ./pvc-data-keycloak-db-sr3-0.yaml
+
+patchesStrategicMerge:
+  - ../../shared-patches/strategic/delete-keycloak-headless-sr6-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-headless-kjj-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-http-sr6-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-http-kjj-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-mariadb-headless-sr6-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-mariadb-headless-kjj-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-mariadb-sr6-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-mariadb-kjj-service.yaml
+  - ../../shared-patches/strategic/delete-nginx-kjj-service.yaml
+  - ../../shared-patches/strategic/delete-keycloak-kjj-statefulset.yaml
+  - ../../shared-patches/strategic/delete-nginx-kjj-deployment.yaml
+  - ../../shared-patches/strategic/delete-keycloak-pool-kjj-ipaddresspool.yaml
+  - ../../shared-patches/strategic/delete-keycloak-pool-kjj-l2advertisement.yaml
+  - ../../shared-patches/strategic/delete-nginx-server-block-kjj-configmap.yaml
+
+patches:
+  # Services
+  - path: ../../shared-patches/json/replace-keycloak-db-headless-metadata-name.json
+    target:
+      kind: Service
+      name: keycloak-db-headless-sr3
+      namespace: keycloak
+  - path: ../../shared-patches/json/replace-keycloak-db-metadata-name.json
+    target:
+      kind: Service
+      name: keycloak-db-sr3
+      namespace: keycloak
+  - path: ../../shared-patches/json/replace-keycloak-headless-metadata-name.json
+    target:
+      kind: Service
+      name: keycloak-headless-sr3
+      namespace: keycloak
+  - path: ../../shared-patches/json/replace-keycloak-http-metadata-name.json
+    target:
+      kind: Service
+      name: keycloak-http-sr3
+      namespace: keycloak
+
+replacements:
+  - path: ../../shared-patches/replacements/update-keycloak-db-secret-version-on-resources.yaml
+  - path: ../../shared-patches/replacements/update-keycloak-server-admin-secret-version-on-resources.yaml
+  - path: ../../shared-patches/replacements/update-keycloak-server-cert-secret-version-on-resources.yaml
