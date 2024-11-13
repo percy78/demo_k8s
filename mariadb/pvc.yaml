@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/instance: mariadb
+    app.kubernetes.io/name: mariadb
+    pvc.k8s.mariadb.com/role: storage
+  name: storage-mariadb-0
+  namespace: mariadb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2G
+  storageClassName: microk8s-hostpath
+  volumeMode: Filesystem

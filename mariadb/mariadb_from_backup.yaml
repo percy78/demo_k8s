@@ -1,0 +1,24 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb-from-backup
+spec:
+  storage:
+    size: 1Gi
+
+  bootstrapFrom:
+    backupRef:
+      name: backup
+    targetRecoveryTime: 2024-11-17T17:30:00Z
+    restoreJob:
+      metadata:
+        labels:
+          sidecar.istio.io/inject: "false"
+      args:
+        - "--verbose"
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
