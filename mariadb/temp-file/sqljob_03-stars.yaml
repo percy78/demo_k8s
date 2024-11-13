@@ -12,9 +12,9 @@ spec:
     cron: "*/1 * * * *"
     suspend: false
   timeZone: "UTC"
-  username: root
+  username: demo-user
   passwordSecretKeyRef:
-    name: mariadb-root
+    name: mariadb
     key: password
   database: mariadb
   sql: |

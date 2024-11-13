@@ -2,40 +2,19 @@ apiVersion: k8s.mariadb.com/v1alpha1
 kind: MariaDB
 metadata:
   name: mariadb
+  namespace: mariadb 
 spec:
   rootPasswordSecretKeyRef:
     name: mariadb-root
     key: password
     generate: true
 
-  username: mariadb
-  passwordSecretKeyRef:
-    name: mariadb-password
-    key: password
-    generate: true
-  database: mariadb
 
   port: 3306
 
   storage:
     size: 1Gi
     storageClassName: microk8s-hostpath
-    resizeInUseVolumes: true
-    waitForVolumeResize: true
-    volumeClaimTemplate:
-    metadata:
-      labels:
-        app.kubernetes.io/instance: mariadb
-        app.kubernetes.io/name: mariadb
-        pvc.k8s.mariadb.com/role: storage
-      name: storage-mariadb-0
-      namespace: mariadb
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
-      storageClassName: microk8s-hostpath
 
   service:
     type: ClusterIP

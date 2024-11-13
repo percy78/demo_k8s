@@ -12,11 +12,11 @@ spec:
     labels:
       sidecar.istio.io/inject: "false"
   serviceAccountName: sqljob
-  username: root
+  username: demo-user
   passwordSecretKeyRef:
-    name: mariadb-root
+    name: mariadb
     key: password
-  database: mariadb
+  database: demo-talk-k8s
   sql: |
     CREATE TABLE IF NOT EXISTS users (
       id bigint PRIMARY KEY AUTO_INCREMENT,
@@ -36,5 +36,7 @@ spec:
     INSERT INTO users(username) VALUES('stefan-bergstein') 
       ON DUPLICATE KEY UPDATE id=id;
     INSERT INTO users(username) VALUES('ola-gustafsson') 
+      ON DUPLICATE KEY UPDATE id=id;
+    INSERT INTO users(username) VALUES('mo-salah') 
       ON DUPLICATE KEY UPDATE id=id;
     --To be continued, contribute to mariadb-operator! 🦭

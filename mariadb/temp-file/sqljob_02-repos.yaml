@@ -7,9 +7,9 @@ spec:
     - name: 01-users
   mariaDbRef:
     name: mariadb
-  username: root
+  username: demo-user
   passwordSecretKeyRef:
-    name: mariadb-root
+    name: mariadb
     key: password
   database: mariadb
   sql: |
