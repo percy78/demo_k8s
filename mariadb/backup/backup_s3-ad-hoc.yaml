@@ -1,16 +1,14 @@
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Backup
 metadata:
-  name: backup-talkk8s
+  name: backup-talkk8s-ad-hoc
   namespace: mariadb
 spec:
   mariaDbRef:
     name: mariadb
   databases:
     - talkk8s
-  schedule:
-    cron: "0 2 * * *"
-  maxRetention: 720h
+  maxRetention: 24h
   storage:
     s3:
       bucket: demo-mariadb

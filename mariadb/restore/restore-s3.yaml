@@ -1,0 +1,9 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Restore
+metadata:
+  name: restore-talk8s-ad-hoc
+spec:
+  mariaDbRef:
+    name: mariadb
+  backupRef:
+    name: backup-talkk8s-ad-hoc
