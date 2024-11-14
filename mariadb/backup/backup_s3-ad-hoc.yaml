@@ -1,0 +1,25 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Backup
+metadata:
+  name: backup-talkk8s
+  namespace: mariadb
+spec:
+  mariaDbRef:
+    name: mariadb
+  databases:
+    - talkk8s
+  schedule:
+    cron: "0 2 * * *"
+  maxRetention: 720h
+  storage:
+    s3:
+      bucket: demo-mariadb
+      prefix: mariadb-backups/talkk8s
+      endpoint: microk8s-hl.minio-operator.svc.cluster.local:9000
+      region: eu-east-1
+      accessKeyIdSecretKeyRef:
+        name: minio
+        key: access-key-id
+      secretAccessKeySecretKeyRef:
+        name: minio
+        key: secret-access-key

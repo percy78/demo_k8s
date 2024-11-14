@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minio
+  namespace: mariadb
+stringData:
+  access-key-id: minio
+  secret-access-key: minio123
+  session-token: token
