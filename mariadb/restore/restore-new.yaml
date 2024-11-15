@@ -6,7 +6,7 @@ spec:
   mariaDbRef:
     name: mariadb
   backupRef:
-    name: backup
+    name: backup-new
   inheritMetadata:
     annotations:
       database.myorg.io: mariadb
