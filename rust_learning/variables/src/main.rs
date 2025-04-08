@@ -7,10 +7,12 @@ fn main() {
 	let quotient = 56.7 / 32.2;
 	let remainder = 43 % 5;
 	let t = true;
-	let f = false;
 	let c = 'z';
-
+	let z: char = 'ℤ'; // with explicit type annotation
+	let f: bool = false; // with explicit type annotation
 	let x = 5;
+	let heart_eyed_cat = '😻';
+	let smile = ':)';
     
 	{
 	    let x = x * 2;
@@ -25,5 +27,8 @@ fn main() {
 	println!("The value of t is: {t}");
 	println!("The value of f is: {f}");
 	println!("The value of z is: {c}");
-
+	println!("The value of z: is: {z:}");
+	println!("The value of hear eyed cat is: {heart_eyed_cat}");
+	println!("The value of smile is: {smile}");
+	    
     }
