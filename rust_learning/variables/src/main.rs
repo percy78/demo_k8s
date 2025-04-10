@@ -12,8 +12,16 @@ fn main() {
 	let f: bool = false; // with explicit type annotation
 	let x = 5;
 	let heart_eyed_cat = '😻';
-	let smile = ':)';
-    
+	let smile = '🥵';
+        let tuple_of_tuples: (i32, f64, u8) = (500, 6.4, 1);
+	let tup = (500, 6.4, 1);
+	let (_a, _b, _c) = tup;
+        let q: (i32, f64, u8) = (800, 7.3, 9);
+        let _eight_hundred = q.0;
+        let _seven_point_three = q.1;
+        let _nine = q.2;
+	let h = [1, 2, 3, 4, 5];
+
 	{
 	    let x = x * 2;
 	    println!("The value of x in the inner scope is: {x}");
@@ -30,5 +38,10 @@ fn main() {
 	println!("The value of z: is: {z:}");
 	println!("The value of hear eyed cat is: {heart_eyed_cat}");
 	println!("The value of smile is: {smile}");
+	println!("tuple of tuples: {:?}", tuple_of_tuples);
+	println!("The value of b is: {_b}");
+	println!("The value of q is: {_seven_point_three}");
+	println!("The value of h is: {h:?}");
+
 	    
     }
