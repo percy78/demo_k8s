@@ -25,10 +25,9 @@ fn main() {
               "August", "September", "October", "November", "December"];
 
 	let jay = [10, 20, 3, 4, 5];
-	let first = jay[0];
-	let second = jay[1];
+	let first = jay[1];
+	let second = jay[4];
 	
-
 
 	{
 	    let x = x * 2;
