@@ -1,9 +1,9 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: appmanagers.operator.telia.com
+  name: appmanagers.operator.percy.com
 spec:
-  group: operator.telia.com
+  group: operator.percy.com
   versions:
   - name: v1
     served: true
