@@ -1,0 +1,15 @@
+apiVersion: operator.telia.com/v1
+kind: AppManager
+metadata:
+  name: example-app
+  namespace: default
+spec:
+  appName: nginx-example
+  replicas: 2
+  image: nginx:1.21
+  envVars:
+    ENVIRONMENT: "production"
+    LOG_LEVEL: "info"
+  resources:
+    cpu: "200m"
+    memory: "256Mi"

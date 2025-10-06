@@ -1,0 +1,20 @@
+[package]
+name = "k8s-operator"
+version = "0.1.0"
+edition = "2021"
+description = "A Kubernetes operator written in Rust"
+authors = ["Percy <percy@telia.com>"]
+
+[dependencies]
+kube = { version = "0.93", features = ["runtime", "derive"] }
+k8s-openapi = { version = "0.22", features = ["latest"] }
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+futures = "0.3"
+schemars = { version = "0.8", features = ["chrono"] }
+chrono = { version = "0.4", features = ["serde"] }

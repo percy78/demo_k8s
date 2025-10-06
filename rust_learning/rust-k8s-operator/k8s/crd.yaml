@@ -1,0 +1,72 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: appmanagers.operator.telia.com
+spec:
+  group: operator.telia.com
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              appName:
+                type: string
+                description: "Name of the application to manage"
+              replicas:
+                type: integer
+                default: 1
+                description: "Number of replicas"
+              image:
+                type: string
+                description: "Docker image to deploy"
+              envVars:
+                type: object
+                additionalProperties:
+                  type: string
+                description: "Environment variables"
+              resources:
+                type: object
+                properties:
+                  cpu:
+                    type: string
+                    default: "100m"
+                    description: "CPU request"
+                  memory:
+                    type: string
+                    default: "128Mi"
+                    description: "Memory request"
+            required:
+            - appName
+            - image
+          status:
+            type: object
+            properties:
+              readyReplicas:
+                type: integer
+                description: "Current number of ready replicas"
+              phase:
+                type: string
+                description: "Current phase of the application"
+              lastUpdated:
+                type: string
+                format: date-time
+                description: "Last update timestamp"
+              message:
+                type: string
+                description: "Status message"
+    subresources:
+      status: {}
+  scope: Namespaced
+  names:
+    plural: appmanagers
+    singular: appmanager
+    kind: AppManager
+    shortNames:
+    - app
+    - apps
