@@ -3,7 +3,7 @@ name = "k8s-operator"
 version = "0.1.0"
 edition = "2021"
 description = "A Kubernetes operator written in Rust"
-authors = ["Percy <percy@telia.com>"]
+authors = ["Percy <percy78@gmail.com>"]
 
 [dependencies]
 kube = { version = "0.93", features = ["runtime", "derive"] }

@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 /// Our custom resource for managing applications
 #[derive(CustomResource, Deserialize, Serialize, Clone, Debug, JsonSchema)]
 #[kube(
-    group = "operator.telia.com",
+    group = "operator.percy.com",
     version = "v1",
     kind = "AppManager",
     namespaced,

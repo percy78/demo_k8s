@@ -1,4 +1,4 @@
-apiVersion: operator.telia.com/v1
+apiVersion: operator.percy.com/v1
 kind: AppManager
 metadata:
   name: example-app
