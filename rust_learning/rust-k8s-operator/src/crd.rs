@@ -14,6 +14,7 @@ use std::collections::BTreeMap;
     derive = "Default"
 )]
 #[serde(rename_all = "camelCase")]
+#[derive(Default)]
 pub struct AppManagerSpec {
     /// Name of the application to manage
     pub app_name: String,

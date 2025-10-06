@@ -1,5 +1,6 @@
 use crate::crd::{AppManager, AppManagerStatus};
 use anyhow::Result;
+use futures::StreamExt;
 use k8s_openapi::api::apps::v1::{Deployment, DeploymentSpec};
 use k8s_openapi::api::core::v1::{
     Container, ContainerPort, EnvVar, PodSpec, PodTemplateSpec, ResourceRequirements as K8sResourceRequirements,

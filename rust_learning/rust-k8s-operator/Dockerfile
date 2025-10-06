@@ -2,10 +2,20 @@
 FROM rust:1.75-bookworm as builder
 
 WORKDIR /app
-COPY Cargo.toml Cargo.lock ./
+
+# Copy Cargo.toml first to leverage Docker layer caching
+COPY Cargo.toml ./
+
+# Create a dummy main.rs to trigger dependency download
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+
+# Build dependencies (this will be cached unless Cargo.toml changes)
+RUN cargo build --release && rm -rf src
+
+# Copy actual source code
 COPY src/ ./src/
 
-# Build the application
+# Build the actual application
 RUN cargo build --release
 
 # Runtime stage

@@ -3,7 +3,7 @@ mod crd;
 
 use anyhow::Result;
 use kube::Client;
-use tracing::{info, Level};
+use tracing::info;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 #[tokio::main]

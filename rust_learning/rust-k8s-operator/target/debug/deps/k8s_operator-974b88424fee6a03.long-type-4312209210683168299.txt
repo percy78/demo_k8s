@@ -1,0 +1,1 @@
+impl futures_core::stream::Stream<Item = Result<(ObjectRef<AppManager>, Action), kube::kube_runtime::controller::Error<<impl Future<Output = Result<Action, ControllerError>> as futures_core::future::TryFuture>::Error, kube::kube_runtime::watcher::Error>>>
