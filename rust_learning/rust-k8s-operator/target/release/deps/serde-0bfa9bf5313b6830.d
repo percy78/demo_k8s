@@ -1,0 +1,14 @@
+/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/deps/serde-0bfa9bf5313b6830.d: /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/build/serde-14746f82ce53477e/out/private.rs
+
+/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/deps/libserde-0bfa9bf5313b6830.rlib: /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/build/serde-14746f82ce53477e/out/private.rs
+
+/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/deps/libserde-0bfa9bf5313b6830.rmeta: /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/build/serde-14746f82ce53477e/out/private.rs
+
+/home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/home/percy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/build/serde-14746f82ce53477e/out/private.rs:
+
+# env-dep:OUT_DIR=/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/build/serde-14746f82ce53477e/out

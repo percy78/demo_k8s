@@ -1,16 +1,19 @@
 # Build stage
-FROM rust:1.75-bookworm as builder
+FROM rust:1.82-bookworm AS builder
 
 WORKDIR /app
 
-# Copy Cargo.toml first to leverage Docker layer caching
-COPY Cargo.toml ./
+# Copy Cargo.toml and Cargo.lock first to leverage Docker layer caching
+COPY Cargo.toml Cargo.lock* ./
 
 # Create a dummy main.rs to trigger dependency download
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 
 # Build dependencies (this will be cached unless Cargo.toml changes)
-RUN cargo build --release && rm -rf src
+RUN cargo build --release
+
+# Remove the dummy target/release/k8s-operator binary and src
+RUN rm -f target/release/k8s-operator target/release/deps/k8s_operator* && rm -rf src
 
 # Copy actual source code
 COPY src/ ./src/
@@ -27,17 +30,17 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
-RUN useradd -r -u 1000 -m operator
+RUN useradd -r -u 1000 -m k8soperator
 
 # Copy the binary from builder stage
 COPY --from=builder /app/target/release/k8s-operator /usr/local/bin/k8s-operator
 
 # Change ownership and make executable
-RUN chown operator:operator /usr/local/bin/k8s-operator && \
+RUN chown k8soperator:k8soperator /usr/local/bin/k8s-operator && \
     chmod +x /usr/local/bin/k8s-operator
 
 # Switch to non-root user
-USER operator
+USER k8soperator
 
 # Set the startup command
 ENTRYPOINT ["/usr/local/bin/k8s-operator"]

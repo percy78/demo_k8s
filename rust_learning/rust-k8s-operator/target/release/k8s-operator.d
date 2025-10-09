@@ -1,0 +1,1 @@
+/home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/target/release/k8s-operator: /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/src/controller.rs /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/src/crd.rs /home/percy/demo/demo_k8s-1/rust_learning/rust-k8s-operator/src/main.rs
